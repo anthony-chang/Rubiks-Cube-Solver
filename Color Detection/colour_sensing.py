@@ -7,7 +7,8 @@ import numpy as np
 
 url = 'https://192.168.137.216:8080/'
 feed = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-#feed = cv2.VideoCapture(url+'video')
+feed.open(0)
+# feed = cv2.VideoCapture(url+'video')
 FEED_WIDTH = int(feed.get(3))
 FEED_HEIGHT = int(feed.get(4))
 
@@ -29,7 +30,28 @@ for i in range(9):
     squares2[i][0] = (80 + (i % 3) * 25, 50 + (i // 3) * 25)
     squares2[i][1] = (130 + (i % 3) * 45, 100 + (i // 3) * 45)
 
-while (1):
+OFFSET = squares1[0][0]
+
+
+def findcolour(xx, yy, ww, hh):
+    avg = []
+    maxVal = 0
+    maxColour = -1
+    for k in range(6):
+        avg.append(0)
+        for i in range(ww):
+            for j in range(hh):
+                avg[k] += colourMask[k][xx+i][yy+j]
+        avg[k] = avg[k] / (ww * hh)
+        if avg[k] > maxVal:
+            maxVal = avg[k]
+            maxColour = k
+    return maxColour
+
+
+
+
+while 1:
     # Capture frame-by-frame
     (ret, frame) = feed.read()
     # frame = cv2.flip(frame,1) #mirror the stream
@@ -37,8 +59,8 @@ while (1):
     # Draw the nine squares to align the cube
     for i in range(9):
         cv2.rectangle(frame, squares1[i][0], squares1[i][1], (255, 255, 255), 1)
-        #cv2.rectangle(canvas, squares2[i][0], squares2[i][1], colours[i], -1)
-        #cv2.putText(frame, str(i+1), tuple(np.add(squares1[i][0], (0, 10))), cv2.FONT_HERSHEY_PLAIN, 0.8, (255, 255, 255))
+        # cv2.rectangle(canvas, squares2[i][0], squares2[i][1], colours[i], -1)
+        # cv2.putText(frame, str(i+1), tuple(np.add(squares1[i][0], (0, 10))), cv2.FONT_HERSHEY_PLAIN, 0.8, (255, 255, 255))
 
     colourMask = [0 for i in range(6)]
     # frame = np.concatenate((frame, canvas), axis=1)
@@ -54,7 +76,7 @@ while (1):
     for i in range(6):
         mask = cv2.bitwise_or(mask, colourMask[i])
 
-    mask = mask[100:365, 150:415] #Crop the mask
+    mask = mask[OFFSET[1]:365, OFFSET[0]:415]  # Crop the mask
     cntsUnfiltered = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cntsUnfiltered = cntsUnfiltered[0] if len(cntsUnfiltered) == 2 else cntsUnfiltered[1]
 
@@ -63,12 +85,10 @@ while (1):
         if cv2.contourArea(cntsUnfiltered[i]) > 3000 and cv2.contourArea(cntsUnfiltered[i]) < 8000:
             cnts.append(cntsUnfiltered[i])
 
-
     # Sort all contours from top-to-bottom or bottom-to-top
     cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:9]  # Sort 9 largest contours
     if len(cnts) > 0:
         (cnts, _) = contours.sort_contours(cnts, method="top-to-bottom")
-
 
     # Take each row of 3 and sort from left-to-right or right-to-left
     cube_rows = []
@@ -80,14 +100,17 @@ while (1):
             cube_rows.append(cnts)
             row = []
 
+    # Print the bounding rectangles and number them
     number = 0
     for row in cube_rows:
         for c in row:
             x, y, w, h = cv2.boundingRect(c)
-            cv2.rectangle(frame, (x+150, y+100), (x + w+150, y + h+100), (36, 255, 12), 2)
-
-            cv2.putText(frame, "#{}".format(number + 1), (x+150, y+100 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-            #cv2.putText(frame, str(w*h), (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+            cv2.rectangle(frame, (x + OFFSET[0], y + OFFSET[1]), (x + w + OFFSET[0], y + h + OFFSET[1]), (36, 255, 12),
+                          2)
+            cv2.putText(frame, "#{}".format(number + 1), (x + OFFSET[0], y + OFFSET[1] - 5), cv2.FONT_HERSHEY_SIMPLEX,
+                        0.7, (255, 255, 255), 2)
+            # print(str(number) + ": " + str(findcolour(x, y, w, h)))
+            # cv2.putText(frame, str(w*h), (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
             number += 1
             if number > 9:
                 break
