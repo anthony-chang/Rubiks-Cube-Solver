@@ -1,0 +1,8 @@
+{"Top Face", "Right Face", "Front Face", "Bottom Face", "Left Face", "Back Face" }
+OGRORGOBO
+BWYGBWYBW
+WBYRGOWYR
+WRRRYYBWG
+BOGWWROOG
+BBRGOYYYG
+
