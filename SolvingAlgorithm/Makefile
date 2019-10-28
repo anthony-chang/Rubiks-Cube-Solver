@@ -1,9 +1,9 @@
 SRC = \
-src/CoordCube.java \
-src/CubieCube.java \
-src/Search.java \
-src/Util.java \
-src/Tools.java
+src/lib.CoordCube.java \
+src/lib.CubieCube.java \
+src/lib.Search.java \
+src/lib.Util.java \
+src/lib.Tools.java
 
 MAINPROG = example/MainProgram.java
 

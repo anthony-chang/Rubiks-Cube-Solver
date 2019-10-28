@@ -1,4 +1,4 @@
-package cs.min2phase;
+package lib;
 
 class CoordCube {
     static final int N_MOVES = 18;

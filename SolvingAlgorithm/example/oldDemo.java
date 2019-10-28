@@ -1,17 +1,14 @@
-# min2phase
-- Rubik's Cube solver or scrambler. [![Build Status](https://travis-ci.org/cs0x7f/min2phase.svg?branch=master)](https://travis-ci.org/cs0x7f/min2phase)
+import lib.Search;
 
-# Usage
+import java.util.HashMap;
+import java.util.Scanner;
 
-```java
-import cs.min2phase.Search;
-import cs.min2phase.Tools;
-
-public class demo {
+public class oldDemo {
 
     public static void simpleSolve(String scrambledCube) {
         String result = new Search().solution(scrambledCube, 21, 100000000, 0, 0);
         System.out.println(result);
+
         // R2 U2 B2 L2 F2 U' L2 R2 B2 R2 D  B2 F  L' F  U2 F' R' D' L2 R'
     }
 
@@ -57,6 +54,59 @@ public class demo {
         // L2 U  D2 R' B  U2 L  F  U  R2 D2 F2 U' L2 U  B  D  R'
     }
 
+    @SuppressWarnings("Duplicates")
+    public static String getInput() {
+        Scanner in = new Scanner(System.in);
+        // Possible Colours: W R O Y B G
+        /*
+        Enter this way
+        1 2 3
+        4 5 6
+        7 8 9
+         */
+        System.out.print("Enter front face: ");
+        String front = in.nextLine().trim();
+        System.out.print("Enter left face: ");
+        String left = in.nextLine().trim();
+        System.out.print("Enter right face: ");
+        String right = in.nextLine().trim();
+        System.out.print("Enter top face: ");
+        String top = in.nextLine().trim();
+        System.out.print("Enter bottom face: ");
+        String bottom = in.nextLine().trim();
+        System.out.print("Enter back face: ");
+        String back = in.nextLine().trim();
+
+        HashMap<Character, Character> mapping = new HashMap<Character, Character>();
+        mapping.put('W', 'D');
+        mapping.put('R', 'F');
+        mapping.put('G', 'R');
+        mapping.put('B', 'L');
+        mapping.put('Y', 'U');
+        mapping.put('O', 'B');
+
+        StringBuilder scrambled = new StringBuilder();
+        for (int i=0; i<9; i++) {
+            scrambled.append(mapping.get(top.charAt(i)));
+        }
+        for (int i=0; i<9; i++) {
+            scrambled.append(mapping.get(right.charAt(i)));
+        }
+        for (int i=0; i<9; i++) {
+            scrambled.append(mapping.get(front.charAt(i)));
+        }
+        for (int i=0; i<9; i++) {
+            scrambled.append(mapping.get(bottom.charAt(i)));
+        }
+        for (int i=0; i<9; i++) {
+            scrambled.append(mapping.get(left.charAt(i)));
+        }
+        for (int i=0; i<9; i++) {
+            scrambled.append(mapping.get(back.charAt(i)));
+        }
+        return scrambled.toString();
+    }
+
     public static void main(String[] args) {
         // Full initialization, which will take about 200ms.
         // The solver will be about 5x~10x slower without full initialization.
@@ -91,32 +141,13 @@ public class demo {
          * -> U1 U2 ... U9 R1 ... R9 F1 ... F9 D1 ... D9 L1 ... L9 B1 ... B9
          */
         String scrambledCube = "DUUBULDBFRBFRRULLLBRDFFFBLURDBFDFDRFRULBLUFDURRBLBDUDL";
+        scrambledCube = getInput();
         // scrambledCube can also be optained by specific moves
-        scrambledCube = Tools.fromScramble("R L2 D R F U2 F' L F' B2 D' R2 B2 R2 L2 U F2 L2 B2 U2 R2");
         System.out.println(scrambledCube);
 
         simpleSolve(scrambledCube);
-        outputControl(scrambledCube);
-        findShorterSolutions(scrambledCube);
-        continueSearch(scrambledCube);
+        //outputControl(scrambledCube);
+        //findShorterSolutions(scrambledCube);
+        //continueSearch(scrambledCube);
     }
 }
-```
-
-# License GPLv3
-
-    Copyright (C) 2019  Shuang Chen
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-

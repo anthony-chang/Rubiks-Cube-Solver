@@ -1,8 +1,3 @@
-package ui;
-
-import cs.min2phase.Tools;
-import cs.min2phase.Search;
-
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -307,7 +302,7 @@ public class MainProgram extends javax.swing.JFrame {
         long t = System.nanoTime();
         String result = search.solution(cubeString, maxDepth, 100, 0, mask);;
         long n_probe = search.numberOfProbes();
-        // ++++++++++++++++++++++++ Call Search.solution method from package org.kociemba.twophase ++++++++++++++++++++++++
+        // ++++++++++++++++++++++++ Call lib.Search.solution method from package org.kociemba.twophase ++++++++++++++++++++++++
         while (result.startsWith("Error 8") && ((System.nanoTime() - t) < maxTime * 1.0e9)) {
             result = search.next(100, 0, mask);
             n_probe += search.numberOfProbes();
