@@ -5,7 +5,7 @@ from imutils import contours
 import cv2
 import numpy as np
 
-feed = cv2.VideoCapture(0)
+feed = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 FEED_WIDTH = int(feed.get(3))
 FEED_HEIGHT = int(feed.get(4))
 
