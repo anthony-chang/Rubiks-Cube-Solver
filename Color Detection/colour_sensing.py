@@ -5,7 +5,9 @@ from imutils import contours
 import cv2
 import numpy as np
 
+url = 'https://192.168.137.216:8080/'
 feed = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+#feed = cv2.VideoCapture(url+'video')
 FEED_WIDTH = int(feed.get(3))
 FEED_HEIGHT = int(feed.get(4))
 
@@ -46,18 +48,19 @@ while (1):
     colourMask[2] = cv2.inRange(framehsv, (80, 180, 140), (120, 255, 255))  # blue
     colourMask[3] = cv2.inRange(framehsv, (5, 70, 150), (15, 235, 255))  # orange
     colourMask[4] = cv2.inRange(framehsv, (60, 110, 110), (100, 220, 250))  # green
-    colourMask[5] = cv2.inRange(framehsv, (0, 140, 185), (5, 255, 255))  # red
+    colourMask[5] = cv2.inRange(framehsv, (0, 110, 165), (5, 255, 255))  # red
 
     mask = colourMask[0]
     for i in range(6):
         mask = cv2.bitwise_or(mask, colourMask[i])
 
+    mask = mask[100:365, 150:415] #Crop the mask
     cntsUnfiltered = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cntsUnfiltered = cntsUnfiltered[0] if len(cntsUnfiltered) == 2 else cntsUnfiltered[1]
 
     cnts = []
     for i in range(len(cntsUnfiltered)):
-        if cv2.contourArea(cntsUnfiltered[i]) > 3000 and cv2.contourArea(cntsUnfiltered[i]) < 8500:
+        if cv2.contourArea(cntsUnfiltered[i]) > 3000 and cv2.contourArea(cntsUnfiltered[i]) < 8000:
             cnts.append(cntsUnfiltered[i])
 
 
@@ -81,9 +84,9 @@ while (1):
     for row in cube_rows:
         for c in row:
             x, y, w, h = cv2.boundingRect(c)
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (36, 255, 12), 2)
+            cv2.rectangle(frame, (x+150, y+100), (x + w+150, y + h+100), (36, 255, 12), 2)
 
-            cv2.putText(frame, "#{}".format(number + 1), (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+            cv2.putText(frame, "#{}".format(number + 1), (x+150, y+100 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
             #cv2.putText(frame, str(w*h), (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
             number += 1
             if number > 9:
