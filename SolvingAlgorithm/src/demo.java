@@ -95,6 +95,10 @@ public class demo {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
+
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command("python", "../")
+
         Scanner in = new Scanner(new FileReader("./test.txt"));
         in.nextLine();
         String[] input = new String[6];
