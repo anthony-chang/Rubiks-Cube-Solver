@@ -6,9 +6,9 @@ import java.util.Scanner;
 
 public class demo {
 
-    public static final String WIN_PYTHON_PATH = "..\\..\\Color-Detection\\venv\\Scripts\\python.exe";
-    public static final String LINUX_PYTHON_PATH = "../../Color-Detection/venv/bin/python";
-    public static final String PYTHON_FILE_PATH = "../../Color-Detection/colour_sensing.py";
+    public static final String WIN_PYTHON_PATH = "..\\..\\Colour-Detection\\venv\\Scripts\\python.exe";
+    public static final String LINUX_PYTHON_PATH = "../../Colour-Detection/venv/bin/python";
+    public static final String PYTHON_FILE_PATH = "../../Colour-Detection/colour_sensing.py";
 
     public static String simpleSolve(String scrambledCube) {
         return new Search().solution(scrambledCube, 21, 100000000, 0, 0);
