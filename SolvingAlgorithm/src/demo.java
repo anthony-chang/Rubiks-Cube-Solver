@@ -6,6 +6,9 @@ import java.util.Scanner;
 
 public class demo {
 
+    public static final String WIN_PYTHON_PATH = "../../Color-Detection/venv/Scripts/python.exe";
+    public static final String LINUX_PYTHON_PATH = "../../Color-Detection/venv/bin/python";
+
     public static String simpleSolve(String scrambledCube) {
         return new Search().solution(scrambledCube, 21, 100000000, 0, 0);
     }
@@ -95,10 +98,19 @@ public class demo {
 
     public static void main(String[] args) throws FileNotFoundException {
 
+        String pythonPath = "";
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("linux")) {
+            pythonPath = LINUX_PYTHON_PATH;
+        } else if (os.contains("windows")) {
+            pythonPath = WIN_PYTHON_PATH;
+        } else {
+            System.err.println("Your OS is not supported. Only Windows and Linux OS are supported.");
+        }
+
         try {
             ProcessBuilder processBuilder = new ProcessBuilder();
-            System.out.println(System.getProperty("user.dir"));
-            processBuilder.command("../../Color-Detection/venv/Scripts/python.exe", "../../Color-Detection/colour_sensing.py");
+            processBuilder.command(pythonPath, "../../Color-Detection/colour_sensing.py");
             Process process = processBuilder.start();
 
             String line;
