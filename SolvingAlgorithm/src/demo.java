@@ -1,7 +1,6 @@
 import lib.Search;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -12,10 +11,10 @@ public class demo {
     }
 
     public static String getInitalState(String[] input) {
-        String[] faceNames = {"Top Face", "Right Face", "Front Face", "Bottom Face", "Left Face", "Back Face" };
+        String[] faceNames = {"Top Face", "Right Face", "Front Face", "Bottom Face", "Left Face", "Back Face"};
         StringBuilder output = new StringBuilder();
         output.append("=== INITIAL STATE ===\n");
-        for (int i=0; i<6; i++) {
+        for (int i = 0; i < 6; i++) {
             output.append(faceNames[i]).append(":\n");
             for (int j = 0; j < 3; j++) {
                 output.append(input[i].charAt(j)).append(" ").append(input[i].charAt(j + 1)).append(" ").append(input[i].charAt(j + 2)).append("\n");
@@ -96,8 +95,29 @@ public class demo {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command("python", "../")
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder();
+            processBuilder.command("python", "../../../\"Color Detection\"/colour_sensing.py");
+            Process process = processBuilder.start();
+
+            String line;
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            while ((line = errorReader.readLine()) != null) {
+                System.err.println(line);
+            }
+
+            BufferedReader outReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            while ((line = outReader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            int exitCode = process.waitFor();
+            System.out.println("\nExited with error code : " + exitCode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         Scanner in = new Scanner(new FileReader("./test.txt"));
         in.nextLine();
