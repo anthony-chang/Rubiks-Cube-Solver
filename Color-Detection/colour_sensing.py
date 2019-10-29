@@ -11,14 +11,13 @@ FEED_HEIGHT = int(feed.get(4))
 
 squares1 = [[(0, 0) for i in range(2)] for y in range(9)]
 squares2 = [[(0, 0) for i in range(2)] for y in range(9)]
-colours = [(0, 0, 255) for i in range(9)]
 canvas = np.zeros(shape=[250, 300, 3], dtype=np.uint8)
 
 for i in range(9):
     squares1[i][0] = (150 + (i % 3) * 90, 100 + (i // 3) * 90)
     squares1[i][1] = (235 + (i % 3) * 90, 185 + (i // 3) * 90)
-    squares2[i][0] = (80 + (i % 3) * 25, 50 + (i // 3) * 25)
-    squares2[i][1] = (130 + (i % 3) * 45, 100 + (i // 3) * 45)
+    squares2[i][0] = (80 + (i % 3) * 45, 50 + (i // 3) * 45)
+    squares2[i][1] = (120 + (i % 3) * 45, 90 + (i // 3) * 45)
 
 OFFSET = squares1[0][0]
 
@@ -26,8 +25,8 @@ cv2.namedWindow('Feed', cv2.WINDOW_AUTOSIZE)
 cv2.moveWindow('Feed', 0, 0)
 cv2.namedWindow('Mask', cv2.WINDOW_AUTOSIZE)
 cv2.moveWindow('Mask', FEED_WIDTH, 0)
-# cv2.namedWindow('Cube', cv2.WINDOW_AUTOSIZE)
-# cv2.moveWindow('Cube', FEED_WIDTH, OFFSET[1])
+cv2.namedWindow('Cube', cv2.WINDOW_AUTOSIZE)
+cv2.moveWindow('Cube', FEED_WIDTH, 300)
 
 def findcolour(xx, yy, ww, hh):
     avg = []
@@ -37,7 +36,7 @@ def findcolour(xx, yy, ww, hh):
         avg.append(0)
         for i in range(ww):
             for j in range(hh):
-                avg[k] += colourMask[k][xx + i + OFFSET[0]][yy + j + OFFSET[1]]
+                avg[k] += colourMask[k][yy + j][xx + i]
         avg[k] = avg[k] / (ww * hh)
         if avg[k] > maxVal:
             maxVal = avg[k]
@@ -59,6 +58,22 @@ def num2colour(num):
     if num == 5:
         return "red"
 
+def colour2bgr(s):
+    if s == "yellow":
+        return 0, 255, 255
+    if s == "white":
+        return 255, 255, 255
+    if s == "blue":
+        return 255, 0, 0
+    if s == "orange":
+        return 0, 140, 255
+    if s == "green":
+        return 0, 255, 0
+    if s == "red":
+        return 0, 0, 255
+
+
+
 
 while 1:
     # Capture frame-by-frame
@@ -68,7 +83,7 @@ while 1:
     # Draw the nine squares to align the cube
     for i in range(9):
         cv2.rectangle(frame, squares1[i][0], squares1[i][1], (255, 255, 255), 1)
-        # cv2.rectangle(canvas, squares2[i][0], squares2[i][1], colours[i], -1)
+        cv2.rectangle(canvas, squares2[i][0], squares2[i][1], (255, 255, 255), 1)
         # cv2.putText(frame, str(i+1), tuple(np.add(squares1[i][0], (0, 10))), cv2.FONT_HERSHEY_PLAIN, 0.8, (255, 255, 255))
 
     colourMask = [0 for i in range(6)]
@@ -129,7 +144,8 @@ while 1:
         for row in cube_rows:
             for c in row:
                 x, y, w, h = cv2.boundingRect(c)
-                print(num2colour(findcolour(x, y, w, h)))
+                strcolour = colour2bgr(num2colour(findcolour(x+OFFSET[0], y+OFFSET[1], w, h)))
+                cv2.rectangle(canvas, squares2[num-1][0], squares2[num-1][1], strcolour, -1)
                 num += 1
             if num > 9:
                 break
@@ -140,7 +156,7 @@ while 1:
 
     cv2.imshow('Feed', frame)
     cv2.imshow('Mask', mask)
-    # cv2.imshow('Cube', canvas)
+    cv2.imshow('Cube', canvas)
 
 # When everything done, release the capture
 feed.release()
