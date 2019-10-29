@@ -98,7 +98,7 @@ public class demo {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder();
             System.out.println(System.getProperty("user.dir"));
-            processBuilder.command("python", "../../Color-Detection/colour_sensing.py");
+            processBuilder.command("../../Color-Detection/venv/bin/python", "../../Color-Detection/colour_sensing.py");
             Process process = processBuilder.start();
 
             String line;
@@ -114,9 +114,7 @@ public class demo {
 
             int exitCode = process.waitFor();
             System.out.println("\nExited with error code : " + exitCode);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 
