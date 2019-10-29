@@ -3,9 +3,9 @@ import numpy as np
 from imutils import contours
 
 url = 'https://192.168.137.94:8080/'
-#feed = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+feed = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 #feed.open(0)
-feed = cv2.VideoCapture(url+'video')
+#feed = cv2.VideoCapture(url+'video')
 FEED_WIDTH = int(feed.get(3))
 FEED_HEIGHT = int(feed.get(4))
 
