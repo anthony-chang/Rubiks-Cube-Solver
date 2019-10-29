@@ -1,6 +1,5 @@
 from sys import stdin, stdout
 from math import *
-import imutils
 from imutils import contours
 import cv2
 import numpy as np
