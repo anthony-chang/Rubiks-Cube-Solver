@@ -97,7 +97,8 @@ public class demo {
 
         try {
             ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("python", "../../../\"Color Detection\"/colour_sensing.py");
+            System.out.println(System.getProperty("user.dir"));
+            processBuilder.command("python", "../../Color-Detection/colour_sensing.py");
             Process process = processBuilder.start();
 
             String line;
