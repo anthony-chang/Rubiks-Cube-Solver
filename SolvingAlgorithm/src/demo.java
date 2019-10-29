@@ -11,7 +11,7 @@ public class demo {
     }
 
     public static String getInitalState(String[] input) {
-        String[] faceNames = {"Top Face", "Right Face", "Front Face", "Bottom Face", "Left Face", "Back Face"};
+        String[] faceNames = {"Front Face", "Left Face", "Right Face", "Top  Face", "Bottom Face", "Back Face"};
         StringBuilder output = new StringBuilder();
         output.append("=== INITIAL STATE ===\n");
         for (int i = 0; i < 6; i++) {
@@ -49,36 +49,36 @@ public class demo {
 
         StringBuilder scrambled = new StringBuilder();
         for (int i = 0; i < 9; i++) {
-            if (!mapping.containsKey(top.charAt(i))) {
-                System.out.println("Error - Invalid colour " + top.charAt(i) + " in top face.");
+            if (!mapping.containsKey(front.charAt(i))) {
+                System.out.println("Error - Invalid colour " + front.charAt(i) + " in front face.");
                 return null;
             }
             scrambled.append(mapping.get(top.charAt(i)));
+        }
+        for (int i = 0; i < 9; i++) {
+            if (!mapping.containsKey(left.charAt(i))) {
+                System.out.println("Error - Invalid colour " + left.charAt(i) + " in left face.");
+                return null;
+            }
+            scrambled.append(mapping.get(right.charAt(i)));
         }
         for (int i = 0; i < 9; i++) {
             if (!mapping.containsKey(right.charAt(i))) {
                 System.out.println("Error - Invalid colour " + right.charAt(i) + " in right face.");
                 return null;
             }
-            scrambled.append(mapping.get(right.charAt(i)));
-        }
-        for (int i = 0; i < 9; i++) {
-            if (!mapping.containsKey(front.charAt(i))) {
-                System.out.println("Error - Invalid colour " + front.charAt(i) + " in front face.");
-                return null;
-            }
             scrambled.append(mapping.get(front.charAt(i)));
         }
         for (int i = 0; i < 9; i++) {
-            if (!mapping.containsKey(bottom.charAt(i))) {
-                System.out.println("Error - Invalid colour " + bottom.charAt(i) + " in bottom face.");
+            if (!mapping.containsKey(top.charAt(i))) {
+                System.out.println("Error - Invalid colour " + top.charAt(i) + " in top face.");
                 return null;
             }
             scrambled.append(mapping.get(bottom.charAt(i)));
         }
         for (int i = 0; i < 9; i++) {
-            if (!mapping.containsKey(left.charAt(i))) {
-                System.out.println("Error - Invalid colour " + left.charAt(i) + " in left face.");
+            if (!mapping.containsKey(bottom.charAt(i))) {
+                System.out.println("Error - Invalid colour " + bottom.charAt(i) + " in bottom face.");
                 return null;
             }
             scrambled.append(mapping.get(left.charAt(i)));
@@ -108,10 +108,11 @@ public class demo {
             }
 
             BufferedReader outReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            StringBuilder processOutBuilder = new StringBuilder();
             while ((line = outReader.readLine()) != null) {
+                processOutBuilder.append(line);
                 System.out.println(line);
             }
-
             int exitCode = process.waitFor();
             System.out.println("\nExited with error code : " + exitCode);
         } catch (IOException | InterruptedException e) {
