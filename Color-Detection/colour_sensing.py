@@ -11,6 +11,7 @@ FEED_HEIGHT = int(feed.get(4))
 
 squares1 = [[(0, 0) for i in range(2)] for y in range(9)]
 squares2 = [[(0, 0) for i in range(2)] for y in range(9)]
+outputColours = ["" for i in range(6)]
 canvas = np.zeros(shape=[250, 300, 3], dtype=np.uint8)
 
 for i in range(9):
@@ -27,6 +28,7 @@ cv2.namedWindow('Mask', cv2.WINDOW_AUTOSIZE)
 cv2.moveWindow('Mask', FEED_WIDTH, 0)
 cv2.namedWindow('Cube', cv2.WINDOW_AUTOSIZE)
 cv2.moveWindow('Cube', FEED_WIDTH, 300)
+
 
 def findcolour(xx, yy, ww, hh):
     avg = []
@@ -46,33 +48,46 @@ def findcolour(xx, yy, ww, hh):
 
 def num2colour(num):
     if num == 0:
-        return "yellow"
+        return "Y"
     if num == 1:
-        return "white"
+        return "W"
     if num == 2:
-        return "blue"
+        return "B"
     if num == 3:
-        return "orange"
+        return "O"
     if num == 4:
-        return "green"
+        return "G"
     if num == 5:
-        return "red"
+        return "R"
+
 
 def colour2bgr(s):
-    if s == "yellow":
+    if s == "Y":
         return 0, 255, 255
-    if s == "white":
+    if s == "W":
         return 255, 255, 255
-    if s == "blue":
+    if s == "B":
         return 255, 0, 0
-    if s == "orange":
+    if s == "O":
         return 0, 140, 255
-    if s == "green":
+    if s == "G":
         return 0, 255, 0
-    if s == "red":
+    if s == "R":
         return 0, 0, 255
 
-
+def getsidenum(s):
+    if s == "R":
+        return 0
+    if s == "B":
+        return 1
+    if s == "G":
+        return 2
+    if s == "Y":
+        return 3
+    if s == "W":
+        return 4
+    if s == "O":
+        return 5
 
 
 while 1:
@@ -84,10 +99,8 @@ while 1:
     for i in range(9):
         cv2.rectangle(frame, squares1[i][0], squares1[i][1], (255, 255, 255), 1)
         cv2.rectangle(canvas, squares2[i][0], squares2[i][1], (255, 255, 255), 1)
-        # cv2.putText(frame, str(i+1), tuple(np.add(squares1[i][0], (0, 10))), cv2.FONT_HERSHEY_PLAIN, 0.8, (255, 255, 255))
 
     colourMask = [0 for i in range(6)]
-    # frame = np.concatenate((frame, canvas), axis=1)
     framehsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     colourMask[0] = cv2.inRange(framehsv, (15, 90, 130), (60, 245, 245))  # yellow
     colourMask[1] = cv2.inRange(framehsv, (70, 20, 130), (180, 110, 255))  # white
@@ -139,24 +152,33 @@ while 1:
         if number > 9:
             break
 
+    coloursOnOneFace = ""
     if cv2.waitKey(10) == ord('\r'):
         num = 1
         for row in cube_rows:
             for c in row:
                 x, y, w, h = cv2.boundingRect(c)
-                strcolour = colour2bgr(num2colour(findcolour(x+OFFSET[0], y+OFFSET[1], w, h)))
-                cv2.rectangle(canvas, squares2[num-1][0], squares2[num-1][1], strcolour, -1)
+                colourLetter = num2colour(findcolour(x + OFFSET[0], y + OFFSET[1], w, h))
+                strcolour = colour2bgr(colourLetter)
+                cv2.rectangle(canvas, squares2[num - 1][0], squares2[num - 1][1], strcolour, -1)
+                coloursOnOneFace += colourLetter
                 num += 1
             if num > 9:
                 break
     elif cv2.waitKey(10) & 0xFF == 27:
         break
 
+    if len(coloursOnOneFace) == 9:
+        outputColours[getsidenum(coloursOnOneFace[4])] = coloursOnOneFace
 
 
     cv2.imshow('Feed', frame)
     cv2.imshow('Mask', mask)
     cv2.imshow('Cube', canvas)
+
+# Print the colours of the sides
+for i in range(6):
+    print(outputColours[i])
 
 # When everything done, release the capture
 feed.release()
