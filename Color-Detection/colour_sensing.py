@@ -1,9 +1,6 @@
-from sys import stdin, stdout
-from math import *
-import imutils
-from imutils import contours
 import cv2
 import numpy as np
+from imutils import contours
 
 url = 'https://192.168.137.216:8080/'
 feed = cv2.VideoCapture(0, cv2.CAP_DSHOW)
@@ -11,13 +8,6 @@ feed.open(0)
 # feed = cv2.VideoCapture(url+'video')
 FEED_WIDTH = int(feed.get(3))
 FEED_HEIGHT = int(feed.get(4))
-
-cv2.namedWindow('Feed', cv2.WINDOW_AUTOSIZE)
-cv2.moveWindow('Feed', 0, 0)
-cv2.namedWindow('Mask', cv2.WINDOW_AUTOSIZE)
-cv2.moveWindow('Mask', FEED_WIDTH, 0)
-# cv2.namedWindow('Cube', cv2.WINDOW_AUTOSIZE)
-# cv2.moveWindow('Cube', FEED_WIDTH, 0)
 
 squares1 = [[(0, 0) for i in range(2)] for y in range(9)]
 squares2 = [[(0, 0) for i in range(2)] for y in range(9)]
@@ -32,6 +22,12 @@ for i in range(9):
 
 OFFSET = squares1[0][0]
 
+cv2.namedWindow('Feed', cv2.WINDOW_AUTOSIZE)
+cv2.moveWindow('Feed', 0, 0)
+cv2.namedWindow('Mask', cv2.WINDOW_AUTOSIZE)
+cv2.moveWindow('Mask', FEED_WIDTH, 0)
+# cv2.namedWindow('Cube', cv2.WINDOW_AUTOSIZE)
+# cv2.moveWindow('Cube', FEED_WIDTH, OFFSET[1])
 
 def findcolour(xx, yy, ww, hh):
     avg = []
@@ -128,22 +124,22 @@ while 1:
         if number > 9:
             break
 
-    if cv2.waitKey(10) & 0xFF == 10:
+    if cv2.waitKey(10) == ord('\r'):
         num = 1
         for row in cube_rows:
             for c in row:
                 x, y, w, h = cv2.boundingRect(c)
-                print(num2colour(findcolour(x, y, w, h)) + ', ')
+                print(num2colour(findcolour(x, y, w, h)))
                 num += 1
             if num > 9:
                 break
-        if num > 9:
-            break
+    elif cv2.waitKey(10) & 0xFF == 27:
+        break
 
 
 
     cv2.imshow('Feed', frame)
-    cv2.imshow('Mask', colourMask[1])
+    cv2.imshow('Mask', mask)
     # cv2.imshow('Cube', canvas)
 
 # When everything done, release the capture
