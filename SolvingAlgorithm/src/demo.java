@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class demo {
 
-    public static final String WIN_PYTHON_PATH = "..\\..\\Colour-Detection\\venv\\Scripts\\python.exe";
+    public static final String WIN_PYTHON_PATH = "..\\..\\Colour-Detection\\venv-win\\Scripts\\python.exe";
     public static final String LINUX_PYTHON_PATH = "../../Colour-Detection/venv/bin/python";
     public static final String PYTHON_FILE_PATH = "../../Colour-Detection/colour_sensing.py";
 
