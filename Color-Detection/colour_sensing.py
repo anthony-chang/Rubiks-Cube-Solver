@@ -41,7 +41,7 @@ def findcolour(xx, yy, ww, hh):
         avg.append(0)
         for i in range(ww):
             for j in range(hh):
-                avg[k] += colourMask[k][xx+i][yy+j]
+                avg[k] += colourMask[k][xx + i + OFFSET[0]][yy + j + OFFSET[1]]
         avg[k] = avg[k] / (ww * hh)
         if avg[k] > maxVal:
             maxVal = avg[k]
@@ -49,6 +49,19 @@ def findcolour(xx, yy, ww, hh):
     return maxColour
 
 
+def num2colour(num):
+    if num == 0:
+        return "yellow"
+    if num == 1:
+        return "white"
+    if num == 2:
+        return "blue"
+    if num == 3:
+        return "orange"
+    if num == 4:
+        return "green"
+    if num == 5:
+        return "red"
 
 
 while 1:
@@ -109,20 +122,29 @@ while 1:
                           2)
             cv2.putText(frame, "#{}".format(number + 1), (x + OFFSET[0], y + OFFSET[1] - 5), cv2.FONT_HERSHEY_SIMPLEX,
                         0.7, (255, 255, 255), 2)
-            # print(str(number) + ": " + str(findcolour(x, y, w, h)))
-            # cv2.putText(frame, str(w*h), (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
             number += 1
             if number > 9:
                 break
         if number > 9:
             break
 
-    cv2.imshow('Feed', frame)
-    cv2.imshow('Mask', mask)
-    # cv2.imshow('Cube', canvas)
+    if cv2.waitKey(10) & 0xFF == 10:
+        num = 1
+        for row in cube_rows:
+            for c in row:
+                x, y, w, h = cv2.boundingRect(c)
+                print(num2colour(findcolour(x, y, w, h)) + ', ')
+                num += 1
+            if num > 9:
+                break
+        if num > 9:
+            break
 
-    if cv2.waitKey(10) & 0xFF == 27:
-        break
+
+
+    cv2.imshow('Feed', frame)
+    cv2.imshow('Mask', colourMask[1])
+    # cv2.imshow('Cube', canvas)
 
 # When everything done, release the capture
 feed.release()
