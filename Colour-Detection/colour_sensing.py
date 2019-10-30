@@ -20,7 +20,7 @@ for i in range(7):
     if (i == 0):
         file.readline()
         continue
-    line = list(map(float, file.readline().split(" ")))
+    line = list(map(float, file.readline().strip().split(" ")))
     row = []
     maxVal = []
     maxVal.append(line[0])
@@ -35,8 +35,6 @@ for i in range(7):
     row.append(minVal)
     row.append(maxVal)
     colourValues.append(row)
-
-print(colourValues)
 
 for i in range(9):
     squares1[i][0] = (150 + (i % 3) * 90, 100 + (i // 3) * 90)

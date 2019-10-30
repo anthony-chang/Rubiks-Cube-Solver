@@ -137,10 +137,10 @@ file.write(str(faces))
 file.write("\n")
 for faceVal in faceValues:
     for i in range(3):
-        file.write(str(min(faceVal[0][i] + 10 * faceVal[1][i], 255)))
+        file.write(str(min(faceVal[0][i] + 4 * faceVal[1][i], 255)))
         file.write(" ")
     for i in range(3):
-        file.write(str(max(faceVal[0][i] - 10 * faceVal[1][i], 0)))
+        file.write(str(max(faceVal[0][i] - 4 * faceVal[1][i], 0)))
         file.write(" ")
     file.write("\n")
 file.write("\n")
