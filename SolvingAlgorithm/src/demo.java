@@ -14,6 +14,11 @@ public class demo {
         return new Search().solution(scrambledCube, 21, 100000000, 0, 0);
     }
 
+    public static String findShorterSolutions(String scrambledCube) {
+        String result = new Search().solution(scrambledCube, 21, 100000000, 10000, 0);
+        return result;
+    }
+
     public static String getInitalState(String[] input) {
         String[] faceNames = {"Front Face", "Left Face", "Right Face", "Top  Face", "Bottom Face", "Back Face"};
         StringBuilder output = new StringBuilder();
@@ -151,5 +156,7 @@ public class demo {
         Search.init();
         String result = simpleSolve(parsedInput);
         System.out.println("Solution: " + result);
+        String result2 = findShorterSolutions(parsedInput);
+        System.out.println("Solution: " + result2);
     }
 }
