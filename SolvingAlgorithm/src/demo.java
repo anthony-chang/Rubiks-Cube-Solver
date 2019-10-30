@@ -21,7 +21,7 @@ public class demo {
         for (int i = 0; i < 6; i++) {
             output.append(faceNames[i]).append(":\n");
             for (int j = 0; j < 9; j += 3) {
-                output.append(input[i].charAt(j)).append(" ").append(input[i].charAt(j + 1)).append(" ").append(input[i].charAt(j + 2)).append("\n");
+                    output.append(input[i].charAt(j)).append(" ").append(input[i].charAt(j + 1)).append(" ").append(input[i].charAt(j + 2)).append("\n");
             }
         }
         output.append("======\n");
@@ -108,8 +108,7 @@ public class demo {
         } else {
             System.err.println("Your OS is not supported. Only Windows and Linux OS are supported.");
         }
-        String[] input = new String[6];
-        int counter = 0;
+
         try {
             ProcessBuilder processBuilder = new ProcessBuilder();
             processBuilder.command(pythonPath, PYTHON_FILE_PATH);
@@ -126,19 +125,19 @@ public class demo {
             while ((line = outReader.readLine()) != null) {
                 processOutBuilder.append(line);
                 System.out.println(line);
-                input[counter++] = line;
             }
             int exitCode = process.waitFor();
             System.out.println("\nExited with error code : " + exitCode);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-        /*Scanner in = new Scanner(new FileReader("./test.txt"));
+
+        Scanner in = new Scanner(new FileReader("./test.txt"));
         in.nextLine();
         String[] input = new String[6];
         for (int i = 0; i < 6; i++) {
             input[i] = in.nextLine().trim();
-        }*/
+        }
         String parsedInput = parseInput(input);
         String initialState = getInitalState(input);
 
