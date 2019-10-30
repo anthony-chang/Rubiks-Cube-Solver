@@ -2,12 +2,14 @@ import cv2
 import numpy as np
 from imutils import contours
 
-url = 'https://192.168.137.230:8080/'
+url = 'https://10.42.0.18:8080/'
 feed = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 feed.open(0)
 #feed = cv2.VideoCapture(url+'video')
 FEED_WIDTH = int(feed.get(3))
 FEED_HEIGHT = int(feed.get(4))
+
+file = open("calib.txt", "w+")
 
 squares1 = [[(0, 0) for i in range(2)] for y in range(9)]
 squares2 = [[(0, 0) for i in range(2)] for y in range(9)]
@@ -85,7 +87,12 @@ def getsidenum(s):
         return 5
 
 
-while 1:
+faces = ["White", "Red", "Blue", "Orange", "Green", "Yellow"]
+faceValues = [[[] for i in range(2)] for y in range(6)]
+curFace = 0
+print("SCAN " + faces[curFace] + " FACE.")
+
+while curFace < 6:
     # Capture frame-by-frame
     (ret, frame) = feed.read()
     # frame = cv2.flip(frame,1) #mirror the stream
@@ -105,17 +112,35 @@ while 1:
         avg = np.average(row_avg, axis=0)
         row_std = np.std(mask, axis=0)
         std = np.std(row_std, axis=0)
-        print (avg)
-        print (std)
+        faceValues[curFace] = [avg, std]
+        print(avg)
+        print(std)
+        curFace += 1
+        if (curFace > 5):
+            break
+        print("SCAN " + faces[curFace] + " FACE.")
+    elif cv2.waitKey(10) == ord('r'):
+        curFace -= 1
+        print("SCAN " + faces[curFace] + " FACE.")
     elif cv2.waitKey(10) & 0xFF == 27:
         break
 
-    cv2.imshow('Feed', frame)
 
-# Print the colours of the sides
-for i in range(6):
-    print(outputColours[i])
+
+    cv2.imshow('Feed', frame)
 
 # When everything done, release the capture
 feed.release()
 cv2.destroyAllWindows()
+
+file.write(str(faces))
+file.write("\n")
+for faceVal in faceValues:
+    for i in range(3):
+        file.write(str(min(faceVal[0][i] + 10 * faceVal[1][i], 255)))
+        file.write(" ")
+    for i in range(3):
+        file.write(str(max(faceVal[0][i] - 10 * faceVal[1][i], 0)))
+        file.write(" ")
+    file.write("\n")
+file.write("\n")
