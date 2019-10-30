@@ -120,7 +120,7 @@ public class demo {
                 System.err.println(line);
             }
 
-            BufferedReader outReader = new BufferedReader(new InputStreamReader(process.getOutputStream()));
+            BufferedReader outReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             StringBuilder processOutBuilder = new StringBuilder();
             while ((line = outReader.readLine()) != null) {
                 processOutBuilder.append(line);
