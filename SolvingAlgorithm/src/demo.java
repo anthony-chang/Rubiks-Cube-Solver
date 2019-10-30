@@ -109,6 +109,8 @@ public class demo {
             System.err.println("Your OS is not supported. Only Windows and Linux OS are supported.");
         }
 
+        String[] input = new String[6];
+        int counter = 0;
         try {
             ProcessBuilder processBuilder = new ProcessBuilder();
             processBuilder.command(pythonPath, PYTHON_FILE_PATH);
@@ -125,6 +127,7 @@ public class demo {
             while ((line = outReader.readLine()) != null) {
                 processOutBuilder.append(line);
                 System.out.println(line);
+                input[counter++] = line;
             }
             int exitCode = process.waitFor();
             System.out.println("\nExited with error code : " + exitCode);
@@ -132,12 +135,12 @@ public class demo {
             e.printStackTrace();
         }
 
-        Scanner in = new Scanner(new FileReader("./test.txt"));
+        /*Scanner in = new Scanner(new FileReader("./test.txt"));
         in.nextLine();
         String[] input = new String[6];
         for (int i = 0; i < 6; i++) {
             input[i] = in.nextLine().trim();
-        }
+        }*/
         String parsedInput = parseInput(input);
         String initialState = getInitalState(input);
 
