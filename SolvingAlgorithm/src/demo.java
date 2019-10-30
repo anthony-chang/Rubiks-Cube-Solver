@@ -21,7 +21,7 @@ public class demo {
         for (int i = 0; i < 6; i++) {
             output.append(faceNames[i]).append(":\n");
             for (int j = 0; j < 3; j++) {
-                output.append(input[i].charAt(j)).append(" ").append(input[i].charAt(j + 1)).append(" ").append(input[i].charAt(j + 2)).append("\n");
+                output.append(input[i].charAt(j*3)).append(" ").append(input[i].charAt(j*3 + 1)).append(" ").append(input[i].charAt(j*3 + 2)).append("\n");
             }
         }
         output.append("======\n");
