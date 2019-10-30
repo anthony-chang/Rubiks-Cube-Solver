@@ -20,9 +20,10 @@ public class demo {
         output.append("=== INITIAL STATE ===\n");
         for (int i = 0; i < 6; i++) {
             output.append(faceNames[i]).append(":\n");
-            for (int j = 0; j < 9; j+=3) {
+            for (int j = 0; j < 9; j += 3) {
                 output.append(input[i].charAt(j)).append(" ").append(input[i].charAt(j + 1)).append(" ").append(input[i].charAt(j + 2)).append("\n");
             }
+        }
         output.append("======\n");
         return output.toString();
     }
