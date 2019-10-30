@@ -14,6 +14,30 @@ squares2 = [[(0, 0) for i in range(2)] for y in range(9)]
 outputColours = ["" for i in range(6)]
 canvas = np.zeros(shape=[250, 300, 3], dtype=np.uint8)
 
+file = open("calib.txt", "r")
+colourValues = []
+for i in range(7):
+    if (i == 0):
+        file.readline()
+        continue
+    line = list(map(float, file.readline().split(" ")))
+    row = []
+    maxVal = []
+    maxVal.append(line[0])
+    maxVal.append(line[1])
+    maxVal.append(line[2])
+
+    minVal = []
+    minVal.append(line[3])
+    minVal.append(line[4])
+    minVal.append(line[5])
+
+    row.append(minVal)
+    row.append(maxVal)
+    colourValues.append(row)
+
+print(colourValues)
+
 for i in range(9):
     squares1[i][0] = (150 + (i % 3) * 90, 100 + (i // 3) * 90)
     squares1[i][1] = (235 + (i % 3) * 90, 185 + (i // 3) * 90)
@@ -102,12 +126,12 @@ while 1:
 
     colourMask = [0 for i in range(6)]
     framehsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    colourMask[0] = cv2.inRange(framehsv, (20, 90, 130), (60, 250, 255))  # yellow
-    colourMask[1] = cv2.inRange(framehsv, (0, 5, 130), (130, 110, 255))  # white
-    colourMask[2] = cv2.inRange(framehsv, (70, 180, 190), (120, 255, 255))  # blue
-    colourMask[3] = cv2.inRange(framehsv, (5, 70, 150), (20, 235, 255))  # orange
-    colourMask[4] = cv2.inRange(framehsv, (60, 110, 110), (85, 255, 255))  # green
-    colourMask[5] = cv2.inRange(framehsv, (0, 110, 165), (5, 255, 255))  # red
+    colourMask[0] = cv2.inRange(framehsv, (colourValues[5][0][0], colourValues[5][0][1], colourValues[5][0][2]), (colourValues[5][1][0], colourValues[5][1][1], colourValues[5][1][2]))  # yellow
+    colourMask[1] = cv2.inRange(framehsv, (colourValues[0][0][0], colourValues[0][0][1], colourValues[0][0][2]), (colourValues[0][1][0], colourValues[0][1][1], colourValues[0][1][2]))  # white
+    colourMask[2] = cv2.inRange(framehsv, (colourValues[2][0][0], colourValues[2][0][1], colourValues[2][0][2]), (colourValues[2][1][0], colourValues[2][1][1], colourValues[2][1][2]))  # blue
+    colourMask[3] = cv2.inRange(framehsv, (colourValues[3][0][0], colourValues[3][0][1], colourValues[3][0][2]), (colourValues[3][1][0], colourValues[3][1][1], colourValues[3][1][2]))  # orange
+    colourMask[4] = cv2.inRange(framehsv, (colourValues[4][0][0], colourValues[4][0][1], colourValues[4][0][2]), (colourValues[4][1][0], colourValues[4][1][1], colourValues[4][1][2]))  # green
+    colourMask[5] = cv2.inRange(framehsv, (colourValues[1][0][0], colourValues[1][0][1], colourValues[1][0][2]), (colourValues[1][1][0], colourValues[1][1][1], colourValues[1][1][2]))  # red
 
     mask = colourMask[0]
     for i in range(6):
