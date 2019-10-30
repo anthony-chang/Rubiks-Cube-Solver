@@ -2,10 +2,10 @@ import cv2
 import numpy as np
 from imutils import contours
 
-url = 'https://192.168.137.230:8080/'
+url = 'https://192.168.137.12:8080/'
 feed = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 feed.open(0)
-#feed = cv2.VideoCapture(url+'video')
+# feed = cv2.VideoCapture(url+'video')
 FEED_WIDTH = int(feed.get(3))
 FEED_HEIGHT = int(feed.get(4))
 
@@ -103,7 +103,7 @@ while 1:
     colourMask = [0 for i in range(6)]
     framehsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     colourMask[0] = cv2.inRange(framehsv, (20, 90, 130), (60, 250, 255))  # yellow
-    colourMask[1] = cv2.inRange(framehsv, (10, 5, 130), (110, 110, 255))  # white
+    colourMask[1] = cv2.inRange(framehsv, (0, 5, 130), (130, 110, 255))  # white
     colourMask[2] = cv2.inRange(framehsv, (70, 180, 190), (120, 255, 255))  # blue
     colourMask[3] = cv2.inRange(framehsv, (5, 70, 150), (20, 235, 255))  # orange
     colourMask[4] = cv2.inRange(framehsv, (60, 110, 110), (85, 255, 255))  # green
