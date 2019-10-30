@@ -23,7 +23,6 @@ public class demo {
             for (int j = 0; j < 9; j+=3) {
                 output.append(input[i].charAt(j)).append(" ").append(input[i].charAt(j + 1)).append(" ").append(input[i].charAt(j + 2)).append("\n");
             }
-        }
         output.append("======\n");
         return output.toString();
     }
