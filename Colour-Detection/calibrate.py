@@ -2,10 +2,10 @@ import cv2
 import numpy as np
 from imutils import contours
 
-url = 'https://10.42.0.18:8080/'
-feed = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-feed.open(0)
-#feed = cv2.VideoCapture(url+'video')
+url = 'https://192.168.137.106:8080/'
+#feed = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+#feed.open(0)
+feed = cv2.VideoCapture(url+'video')
 FEED_WIDTH = int(feed.get(3))
 FEED_HEIGHT = int(feed.get(4))
 
@@ -88,7 +88,7 @@ def getsidenum(s):
 
 
 faces = ["White", "Red", "Blue", "Orange", "Green", "Yellow"]
-faceValues = [[[] for i in range(2)] for y in range(6)]
+faceValues = [[[]for i in range(2)] for y in range(6)]
 curFace = 0
 print("SCAN " + faces[curFace] + " FACE.")
 
@@ -108,13 +108,18 @@ while curFace < 6:
     mask = framehsv[OFFSET[1]:365, OFFSET[0]:415]  # Crop the mask
 
     if cv2.waitKey(10) == ord('\r'):
-        row_avg = np.average(mask, axis=0)
-        avg = np.average(row_avg, axis=0)
-        row_std = np.std(mask, axis=0)
-        std = np.std(row_std, axis=0)
-        faceValues[curFace] = [avg, std]
-        print(avg)
-        print(std)
+        # row_avg = np.average(mask, axis=0)
+        # avg = np.average(row_avg, axis=0)
+        # row_std = np.std(mask, axis=0)
+        # std = np.std(row_std, axis=0)
+        row_qhigh, row_qlow = np.percentile(mask, [90, 20], axis=0)
+        qhigh = np.percentile(row_qhigh, [90], axis=0)[0]
+        qlow = np.percentile(row_qlow, [20], axis=0)[0]
+
+        faceValues[curFace] = [qhigh, qlow]
+        print(qlow)
+        print(qhigh)
+        # print(std)
         curFace += 1
         if (curFace > 5):
             break
@@ -137,10 +142,10 @@ file.write(str(faces))
 file.write("\n")
 for faceVal in faceValues:
     for i in range(3):
-        file.write(str(min(faceVal[0][i] + 4 * faceVal[1][i], 255)))
+        file.write(str(min(faceVal[0][i], 255)))
         file.write(" ")
     for i in range(3):
-        file.write(str(max(faceVal[0][i] - 4 * faceVal[1][i], 0)))
+        file.write(str(max(faceVal[1][i], 0)))
         file.write(" ")
     file.write("\n")
 file.write("\n")

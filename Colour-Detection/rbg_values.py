@@ -11,7 +11,7 @@ def rgb(event, x, y, flags, param):
         cv2.putText(image, str(colourHSV), (10, 20), cv2.FONT_HERSHEY_PLAIN, 0.9, 0)
 
 
-# Read an image
+# Read an imagejp
 image = cv2.resize(cv2.imread("1.jpg"), (500, 500))
 imagehsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
