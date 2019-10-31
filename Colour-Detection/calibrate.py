@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from imutils import contours
 
-url = 'https://192.168.137.106:8080/'
+url = 'https://192.168.137.35:8080/'
 #feed = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 #feed.open(0)
 feed = cv2.VideoCapture(url+'video')
@@ -112,8 +112,8 @@ while curFace < 6:
         # avg = np.average(row_avg, axis=0)
         # row_std = np.std(mask, axis=0)
         # std = np.std(row_std, axis=0)
-        row_qhigh, row_qlow = np.percentile(mask, [90, 20], axis=0)
-        qhigh = np.percentile(row_qhigh, [90], axis=0)[0]
+        row_qhigh, row_qlow = np.percentile(mask, [85, 20], axis=0)
+        qhigh = np.percentile(row_qhigh, [85], axis=0)[0]
         qlow = np.percentile(row_qlow, [20], axis=0)[0]
 
         faceValues[curFace] = [qhigh, qlow]
