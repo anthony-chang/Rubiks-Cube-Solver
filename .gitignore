@@ -7,8 +7,6 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
-.idea/misc.xml
-.idea/Rubiks-Cube-Solver.iml
 
 # Generated files
 .idea/**/contentModel.xml
@@ -72,3 +70,4 @@ fabric.properties
 **/calib.txt
 Colour-Detection/calib.txt
 SolvingAlgorithm/src/calib.txt
+.idea/misc.xml
