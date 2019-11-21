@@ -3,6 +3,7 @@ import lib.Search;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
+import arduino.*;
 
 public class demo {
 
@@ -102,7 +103,29 @@ public class demo {
         return scrambled.toString();
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void sendToArduino(String steps) {
+        Arduino arduino = new Arduino("/dev/ttyACM0", 38400);
+        String[] stepsArr = steps.split(" ");
+        boolean opened = arduino.openConnection();
+        System.out.println(opened);
+        if (opened) {
+            for (String step : stepsArr) {
+                arduino.serialWrite(step);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    public static void main(String[] args) {
+        sendToArduino("F2");
+    }
+
+    public static void main2(String[] args) throws FileNotFoundException {
 
         String pythonPath = "";
         String os = System.getProperty("os.name").toLowerCase();
