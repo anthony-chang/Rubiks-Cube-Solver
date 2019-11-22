@@ -5,9 +5,9 @@ const int stepsPerRevolution = 2048;
 Stepper front = Stepper(stepsPerRevolution, 2, 4, 3, 5); //connected in1 -> 1, in2 -> 2, 3, 4..., + -> 5v, - -> gnd
 Stepper right = Stepper(stepsPerRevolution, 6, 8, 7, 9);
 Stepper upper = Stepper(stepsPerRevolution, 10,12,11,13);
-Stepper left = Stepper(stepsPerRevolution, 14, 16, 15, 17);
-Stepper back = Stepper(stepsPerRevolution, 18,20,19,21);
-Stepper down = Stepper(stepsPerRevolution, 22,24,23,25);
+Stepper left = Stepper(stepsPerRevolution, 22,24,23,25);
+Stepper back = Stepper(stepsPerRevolution, 26,28,27,29);
+Stepper down = Stepper(stepsPerRevolution, 30,32,31,33);
 
 //reading the input from serial and creating char array
 int inputting(char* buffer){
