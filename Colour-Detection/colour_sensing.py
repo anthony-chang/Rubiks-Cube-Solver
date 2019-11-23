@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from imutils import contours
 
-url = 'https://192.168.137.198:8080/'
+url = 'https://192.168.137.59:8080/'
 # feed = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 # feed.open(0)
 
@@ -176,7 +176,7 @@ while 1:
             break
 
     coloursOnOneFace = ""
-    if cv2.waitKey(10) == ord('\r'):
+    if cv2.waitKey(10) == ord('\r'): # enter
         num = 1
         for row in cube_rows:
             for c in row:
@@ -188,13 +188,20 @@ while 1:
                 num += 1
             if num > 9:
                 break
-    elif cv2.waitKey(10) & 0xFF == 27:
+    elif cv2.waitKey(10) & 0xFF == 27:  # Escape key
         break
 
+    # If all 9 squares of a face are detected
     if len(coloursOnOneFace) == 9:
-        outputColours[getsidenum(coloursOnOneFace[4])] = coloursOnOneFace
+        outputColours[getsidenum(coloursOnOneFace[4])] = coloursOnOneFace  # index determined by the centre piece
 
+    # Display the HSV value of the centre of the screen at the top of the screen
+    colourHSV = framehsv[int(FEED_HEIGHT/2)-4, int(FEED_WIDTH/2)-38]
+    cv2.rectangle(frame, (0, 0), (140, 30), (255, 255, 255), -1)
+    cv2.circle(frame, (int(FEED_WIDTH/2)-38, int(FEED_HEIGHT/2)-4), 5, (255, 255, 255), 2)
+    cv2.putText(frame, str(colourHSV), (10, 20), cv2.FONT_HERSHEY_PLAIN, 0.9, 0)
 
+    # Output the image
     cv2.imshow('Feed', frame)
     cv2.imshow('Mask', mask)
     cv2.imshow('Cube', canvas)
