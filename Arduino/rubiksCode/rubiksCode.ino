@@ -21,12 +21,12 @@ int inputting(char* buffer){
 
 void setup() {
   // Set the speed to 15 rpm:
-  front.setSpeed(15);
-  right.setSpeed(15);
-  upper.setSpeed(15);
-  left.setSpeed(15);
-  back.setSpeed(15);
-  down.setSpeed(15);
+  front.setSpeed(10);
+  right.setSpeed(10);
+  upper.setSpeed(10);
+  left.setSpeed(10);
+  back.setSpeed(10);
+  down.setSpeed(10);
  // Begin Serial communication at a baud rate of 38400:
   Serial.begin(38400);
 }
@@ -36,18 +36,15 @@ void setup() {
     switch(ch[i+1]){ \
       case '\'': \
         motor.step(stepsPerRevolution/4); \
-        Serial.print("1");\
         ++i; \
         break; \
       case '2': \
         motor.step(stepsPerRevolution/2); \
-        Serial.print("2");\
        ++i; \
         break; \
       case ' ': \
       case '\0': \
         motor.step(-stepsPerRevolution/4); \
-        Serial.print("3");\
         break; \
      default: \
       break; \
@@ -55,19 +52,19 @@ void setup() {
     break;
 
 void loop() {
-  char ch[200];
+  char ch[400];
   memset(ch, 0, sizeof ch);
   int len = inputting(ch);
   for(int i = 0; i < len; i++){
-  switch (ch[i]){
-  command('F', front)
-  command('R', right)
-  command('U', upper)
-  command('L', left)
-  command('B', back)
-  command('D', down)
-  
-  default:
+    Serial.print(ch[i]+ ch[i+1] + " ");
+    switch (ch[i]){
+    command('F', front)
+    command('R', right)
+    command('U', upper)
+    command('L', left)
+    command('B', back)
+    command('D', down)
+    default:
     break;
   }
 }
