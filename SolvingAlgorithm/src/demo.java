@@ -121,11 +121,11 @@ public class demo {
 
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         sendToArduino("F2");
-    }
+    }*/
 
-    public static void main2(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException {
 
         String pythonPath = "";
         String os = System.getProperty("os.name").toLowerCase();

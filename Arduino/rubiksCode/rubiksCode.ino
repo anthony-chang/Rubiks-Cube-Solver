@@ -1,13 +1,14 @@
 #include <Stepper.h>
 // Define number of steps per rotation as 2048
 const int stepsPerRevolution = 2048;
+const int SPEED = 13;
  
 Stepper front = Stepper(stepsPerRevolution, 2, 4, 3, 5); //connected in1 -> 1, in2 -> 2, 3, 4..., + -> 5v, - -> gnd
 Stepper right = Stepper(stepsPerRevolution, 6, 8, 7, 9);
 Stepper upper = Stepper(stepsPerRevolution, 10,12,11,13);
 Stepper left = Stepper(stepsPerRevolution, 22,24,23,25);
 Stepper back = Stepper(stepsPerRevolution, 26,28,27,29);
-Stepper down = Stepper(stepsPerRevolution, 30,32,31,33);
+Stepper down = Stepper(stepsPerRevolution, 38,40,39,41);
 
 //reading the input from serial and creating char array
 int inputting(char* buffer){
@@ -21,12 +22,12 @@ int inputting(char* buffer){
 
 void setup() {
   // Set the speed to 15 rpm:
-  front.setSpeed(10);
-  right.setSpeed(10);
-  upper.setSpeed(10);
-  left.setSpeed(10);
-  back.setSpeed(10);
-  down.setSpeed(10);
+  front.setSpeed(SPEED);
+  right.setSpeed(SPEED);
+  upper.setSpeed(SPEED);
+  left.setSpeed(SPEED);
+  back.setSpeed(SPEED);
+  down.setSpeed(SPEED);
  // Begin Serial communication at a baud rate of 38400:
   Serial.begin(38400);
 }
